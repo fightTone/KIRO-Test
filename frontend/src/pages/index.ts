@@ -1,1 +1,8 @@
-// Export all pages from this file for easier imports
+import HomePage from './Home';
+import { LoginPage, RegisterPage } from './Auth';
+
+export {
+  HomePage,
+  LoginPage,
+  RegisterPage
+};
