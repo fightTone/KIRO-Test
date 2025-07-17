@@ -75,7 +75,12 @@
   - Write unit tests for cart and order functionality
   - _Requirements: 4.1, 4.2, 4.3, 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 6. Set up React application structure and routing
+- [x] 6. Set up React application structure and routing
+
+
+
+
+
   - Configure React Router v6 with all necessary routes
   - Create main App component with route definitions
   - Implement Layout component with consistent header/footer structure
@@ -131,7 +136,15 @@
   - Create order notification system for new orders
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 13. Add user profile and account management
+- [ ] 13. Implement shop and product management for shop owners
+  - Create ShopManagementPage component for shop owners to manage their shops
+  - Build ProductManagementPage component for adding/editing products
+  - Implement forms for creating and updating shops with validation
+  - Create forms for adding and updating products with image upload
+  - Add inventory management functionality for product stock
+  - _Requirements: 2.3, 3.3, 3.4_
+
+- [ ] 14. Add user profile and account management
   - Create ProfilePage component for user account details
   - Implement profile editing functionality
   - Add password change functionality

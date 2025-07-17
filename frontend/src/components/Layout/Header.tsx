@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context';
+import { ThemeToggle } from '../ThemeToggle';
 
 const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -19,24 +20,35 @@ const Header: React.FC = () => {
             <li>
               <Link to="/shops">Shops</Link>
             </li>
+            <li>
+              <Link to="/products">Products</Link>
+            </li>
             {isAuthenticated ? (
               <>
-                {user?.role === 'shop_owner' && (
-                  <li>
-                    <Link to="/my-shop">My Shop</Link>
-                  </li>
+                {user?.role === 'shop_owner' ? (
+                  <>
+                    <li>
+                      <Link to="/my-shop">My Shop</Link>
+                    </li>
+                    <li>
+                      <Link to="/orders">Orders</Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link to="/cart">Cart</Link>
+                    </li>
+                    <li>
+                      <Link to="/orders">My Orders</Link>
+                    </li>
+                  </>
                 )}
-                <li>
-                  <Link to="/cart">Cart</Link>
-                </li>
-                <li>
-                  <Link to="/orders">Orders</Link>
-                </li>
                 <li>
                   <Link to="/profile">Profile</Link>
                 </li>
                 <li>
-                  <button onClick={logout}>Logout</button>
+                  <button onClick={logout} className="logout-btn">Logout</button>
                 </li>
               </>
             ) : (
@@ -49,6 +61,9 @@ const Header: React.FC = () => {
                 </li>
               </>
             )}
+            <li className="theme-toggle-container">
+              <ThemeToggle />
+            </li>
           </ul>
         </nav>
       </div>

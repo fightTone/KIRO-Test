@@ -1,5 +1,7 @@
 // Export all components from this file for easier imports
 export * from './Layout';
+export * from './ThemeToggle';
+export * from './PrivateRoute';
 
 // Add more component exports here as they are created
 // For example:
