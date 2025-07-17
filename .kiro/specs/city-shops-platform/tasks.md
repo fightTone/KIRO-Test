@@ -47,7 +47,13 @@
   - Write unit tests for authentication functions
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 8.2_
 
-- [ ] 4. Create core API endpoints for shops and products
+- [x] 4. Create core API endpoints for shops and products
+
+
+
+
+
+
   - Implement CRUD operations for shops with category filtering
   - Implement CRUD operations for products with category and shop filtering
   - Add category management endpoints
