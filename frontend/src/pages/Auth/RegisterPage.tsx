@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Layout } from '../../components/Layout';
+import { UserRegistration } from '../../types';
+
+interface FormData extends UserRegistration {
+  confirmPassword: string;
+}
+
+interface FormErrors {
+  email: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  address: string;
+}
 
 const RegisterPage: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: '',
     username: '',
     password: '',
@@ -18,22 +35,97 @@ const RegisterPage: React.FC = () => {
   
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<FormErrors>({
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    role: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
+    address: '',
+  });
   
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field when user starts typing
+    if (formErrors[name as keyof FormErrors]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    let isValid = true;
+    const newErrors: FormErrors = {
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      role: '',
+      first_name: '',
+      last_name: '',
+      phone: '',
+      address: '',
+    };
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+      isValid = false;
+    }
+
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+      isValid = false;
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+      isValid = false;
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      isValid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    // Confirm password validation
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+      isValid = false;
+    }
+
+    setFormErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+    if (!validateForm()) {
       return;
     }
     
@@ -67,8 +159,9 @@ const RegisterPage: React.FC = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              className={formErrors.email ? 'error' : ''}
             />
+            {formErrors.email && <div className="field-error">{formErrors.email}</div>}
           </div>
           
           <div className="form-group">
@@ -79,8 +172,9 @@ const RegisterPage: React.FC = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              required
+              className={formErrors.username ? 'error' : ''}
             />
+            {formErrors.username && <div className="field-error">{formErrors.username}</div>}
           </div>
           
           <div className="form-group">
@@ -91,8 +185,9 @@ const RegisterPage: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              required
+              className={formErrors.password ? 'error' : ''}
             />
+            {formErrors.password && <div className="field-error">{formErrors.password}</div>}
           </div>
           
           <div className="form-group">
@@ -103,8 +198,9 @@ const RegisterPage: React.FC = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              required
+              className={formErrors.confirmPassword ? 'error' : ''}
             />
+            {formErrors.confirmPassword && <div className="field-error">{formErrors.confirmPassword}</div>}
           </div>
           
           <div className="form-group">
