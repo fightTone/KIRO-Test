@@ -2,6 +2,7 @@
 export * from './Layout';
 export * from './ThemeToggle';
 export * from './PrivateRoute';
+export { default as ShopCard } from './ShopCard';
 
 // Add more component exports here as they are created
 // For example:

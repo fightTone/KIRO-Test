@@ -18,6 +18,7 @@ import {
 } from './pages';
 import './App.css';
 import './styles/theme.css';
+import './styles/shops.css';
 
 function AppRoutes() {
   return (
