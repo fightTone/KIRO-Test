@@ -107,7 +107,15 @@
   - Add JWT token storage and automatic API authentication
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 8. Build navigation and layout components
+- [x] 8. Build navigation and layout components
+
+
+
+
+
+
+
+
   - Create Navbar component with role-based menu items
   - Implement conditional rendering for cart/orders based on user role and authentication
   - Add profile status display in navbar

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Layout } from '../../components';
 import { useAuth } from '../../context/AuthContext';
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <Layout>
+    <div>
       <h1>My Profile</h1>
       {user && (
         <div>
@@ -16,7 +15,7 @@ const ProfilePage: React.FC = () => {
           {/* Profile management will be implemented in a future task */}
         </div>
       )}
-    </Layout>
+    </div>
   );
 };
 

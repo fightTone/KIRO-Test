@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Layout } from '../../components/Layout';
 
 interface LocationState {
   from?: {
@@ -77,47 +76,45 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="auth-page">
-        <h1>Login</h1>
+    <div className="auth-page">
+      <h1>Login</h1>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className={formErrors.username ? 'error' : ''}
+          />
+          {formErrors.username && <div className="field-error">{formErrors.username}</div>}
+        </div>
         
-        {error && <div className="error-message">{error}</div>}
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={formErrors.password ? 'error' : ''}
+          />
+          {formErrors.password && <div className="field-error">{formErrors.password}</div>}
+        </div>
         
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className={formErrors.username ? 'error' : ''}
-            />
-            {formErrors.username && <div className="field-error">{formErrors.username}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={formErrors.password ? 'error' : ''}
-            />
-            {formErrors.password && <div className="field-error">{formErrors.password}</div>}
-          </div>
-          
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-        
-        <p>
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
-      </div>
-    </Layout>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+      
+      <p>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
+    </div>
   );
 };
 

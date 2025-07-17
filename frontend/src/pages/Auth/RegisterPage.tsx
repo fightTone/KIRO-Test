@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Layout } from '../../components/Layout';
 import { UserRegistration } from '../../types';
 
 interface FormData extends UserRegistration {
@@ -144,133 +143,131 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="auth-page">
-        <h1>Register</h1>
+    <div className="auth-page">
+      <h1>Register</h1>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={formErrors.email ? 'error' : ''}
+          />
+          {formErrors.email && <div className="field-error">{formErrors.email}</div>}
+        </div>
         
-        {error && <div className="error-message">{error}</div>}
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className={formErrors.username ? 'error' : ''}
+          />
+          {formErrors.username && <div className="field-error">{formErrors.username}</div>}
+        </div>
         
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={formErrors.email ? 'error' : ''}
-            />
-            {formErrors.email && <div className="field-error">{formErrors.email}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className={formErrors.username ? 'error' : ''}
-            />
-            {formErrors.username && <div className="field-error">{formErrors.username}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={formErrors.password ? 'error' : ''}
-            />
-            {formErrors.password && <div className="field-error">{formErrors.password}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={formErrors.confirmPassword ? 'error' : ''}
-            />
-            {formErrors.confirmPassword && <div className="field-error">{formErrors.confirmPassword}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-            >
-              <option value="customer">Customer</option>
-              <option value="shop_owner">Shop Owner</option>
-            </select>
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="first_name">First Name</label>
-            <input
-              type="text"
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="last_name">Last Name</label>
-            <input
-              type="text"
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="phone">Phone</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="address">Address</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className={formErrors.password ? 'error' : ''}
+          />
+          {formErrors.password && <div className="field-error">{formErrors.password}</div>}
+        </div>
         
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
-      </div>
-    </Layout>
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={formErrors.confirmPassword ? 'error' : ''}
+          />
+          {formErrors.confirmPassword && <div className="field-error">{formErrors.confirmPassword}</div>}
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="customer">Customer</option>
+            <option value="shop_owner">Shop Owner</option>
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="first_name">First Name</label>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="last_name">Last Name</label>
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="phone">Phone</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Registering...' : 'Register'}
+        </button>
+      </form>
+      
+      <p>
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
+    </div>
   );
 };
 
