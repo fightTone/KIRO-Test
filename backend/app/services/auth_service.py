@@ -39,10 +39,45 @@ def get_user_by_username(db: Session, username: str):
 
 def create_user(db: Session, user_data):
     """Create a new user."""
-    # This will be implemented in a later task
-    pass
+    # Check if user with email or username already exists
+    existing_email = get_user_by_email(db, user_data.email)
+    if existing_email:
+        return None, "Email already registered"
+    
+    existing_username = get_user_by_username(db, user_data.username)
+    if existing_username:
+        return None, "Username already taken"
+    
+    # Create new user
+    hashed_password = get_password_hash(user_data.password)
+    
+    db_user = User(
+        email=user_data.email,
+        username=user_data.username,
+        password_hash=hashed_password,
+        role=user_data.role,
+        first_name=user_data.first_name,
+        last_name=user_data.last_name,
+        phone=user_data.phone,
+        address=user_data.address
+    )
+    
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user, None
 
 def authenticate_user(db: Session, username: str, password: str):
     """Authenticate a user by username and password."""
-    # This will be implemented in a later task
-    pass
+    # Try to find user by username
+    user = get_user_by_username(db, username)
+    
+    # If not found by username, try email
+    if not user:
+        user = get_user_by_email(db, username)
+    
+    # If user not found or password doesn't match
+    if not user or not verify_password(password, user.password_hash):
+        return False
+    
+    return user

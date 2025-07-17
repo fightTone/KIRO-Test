@@ -20,14 +20,26 @@
   - Set up package.json and requirements.txt with all necessary dependencies
   - _Requirements: 7.4, 8.3_
 
-- [ ] 2. Configure database connection and create initial schema
+- [x] 2. Configure database connection and create initial schema
+
+
+
+
+
+
   - Set up MySQL connection using SQLAlchemy with root/secret credentials
   - Create database models for all tables (users, shops, products, categories, carts, orders, order_items)
   - Implement database migration system using Alembic
   - Create initial database seeding script with sample categories
   - _Requirements: 9.1, 9.2, 9.4_
 
-- [ ] 3. Implement authentication system backend
+- [x] 3. Implement authentication system backend
+
+
+
+
+
+
   - Create user registration and login endpoints with JWT token generation
   - Implement password hashing using bcrypt
   - Create authentication middleware for protected routes

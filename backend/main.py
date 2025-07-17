@@ -9,11 +9,22 @@ load_dotenv()
 
 # Import routers
 from app.routers import auth_router, shops_router, products_router, categories_router, cart_router, orders_router
+from app.utils.db_init import create_database
+from app.database import engine, Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
     print("Starting up City Shops Platform API...")
+    
+    # Initialize database
+    print("Initializing database...")
+    create_database()
+    
+    # Create tables if they don't exist
+    print("Creating database tables...")
+    Base.metadata.create_all(bind=engine)
+    
     yield
     # Shutdown
     print("Shutting down City Shops Platform API...")
