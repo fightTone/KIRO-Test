@@ -61,7 +61,13 @@
   - Write unit tests for all API endpoints
   - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 8.1, 8.2_
 
-- [ ] 5. Implement cart and order management backend
+- [x] 5. Implement cart and order management backend
+
+
+
+
+
+
   - Create cart management endpoints (add, update, remove, clear items)
   - Implement order creation from cart items
   - Add order status management for shop owners
