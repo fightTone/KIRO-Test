@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider, ThemeProvider } from './context/';
+import { AuthProvider, ThemeProvider, CartProvider } from './context/';
 import { Layout, PrivateRoute } from './components';
 import {
   HomePage,
@@ -79,7 +79,9 @@ function App() {
     <Router>
       <AuthProvider>
         <ThemeProvider>
-          <AppRoutes />
+          <CartProvider>
+            <AppRoutes />
+          </CartProvider>
         </ThemeProvider>
       </AuthProvider>
     </Router>

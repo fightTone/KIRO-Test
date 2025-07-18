@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { ThemeToggle } from '../ThemeToggle';
+import CartIcon from '../CartIcon';
 
 const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -59,7 +60,7 @@ const Header: React.FC = () => {
                 ) : (
                   <>
                     <li>
-                      <Link to="/cart" onClick={closeMobileMenu}>Cart</Link>
+                      <CartIcon onClick={closeMobileMenu} />
                     </li>
                     <li>
                       <Link to="/orders" onClick={closeMobileMenu}>My Orders</Link>

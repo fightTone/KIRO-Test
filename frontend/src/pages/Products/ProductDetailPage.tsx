@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Product, Shop } from '../../types';
 import { getProduct } from '../../services/productService';
+import { useAuth, useCart } from '../../context';
 import './ProductDetailPage.css';
 
 const ProductDetailPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
+  const { isAuthenticated, user } = useAuth();
+  const { addItem } = useCart();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [addingToCart, setAddingToCart] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -113,8 +119,56 @@ const ProductDetailPage: React.FC = () => {
           
           {product.is_available && product.stock_quantity > 0 && (
             <div className="product-detail-actions">
-              <button className="add-to-cart-button">
-                Add to Cart
+              <div className="quantity-selector">
+                <button 
+                  className="quantity-btn" 
+                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                  disabled={quantity <= 1}
+                >
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  min="1" 
+                  max={product.stock_quantity}
+                  value={quantity}
+                  onChange={(e) => setQuantity(Math.min(product.stock_quantity, Math.max(1, parseInt(e.target.value) || 1)))}
+                  className="quantity-input"
+                />
+                <button 
+                  className="quantity-btn" 
+                  onClick={() => setQuantity(prev => Math.min(product.stock_quantity, prev + 1))}
+                  disabled={quantity >= product.stock_quantity}
+                >
+                  +
+                </button>
+              </div>
+              <button 
+                className="add-to-cart-button"
+                disabled={addingToCart}
+                onClick={async () => {
+                  if (!isAuthenticated) {
+                    navigate('/login', { state: { from: `/products/${product.id}` } });
+                    return;
+                  }
+                  
+                  if (user?.role !== 'customer') {
+                    alert('Only customers can add items to cart');
+                    return;
+                  }
+                  
+                  try {
+                    setAddingToCart(true);
+                    await addItem(product.id, quantity);
+                    alert('Product added to cart successfully!');
+                  } catch (err: any) {
+                    alert(err.response?.data?.detail || 'Failed to add item to cart');
+                  } finally {
+                    setAddingToCart(false);
+                  }
+                }}
+              >
+                {addingToCart ? 'Adding...' : 'Add to Cart'}
               </button>
               <div className="product-detail-stock">
                 {product.stock_quantity} in stock

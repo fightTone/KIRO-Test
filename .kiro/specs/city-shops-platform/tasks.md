@@ -159,7 +159,12 @@
   - Create reusable components for product listings
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 11. Build cart management for customers
+- [x] 11. Build cart management for customers
+
+
+
+
+
   - Create CartPage component for cart item display and management
   - Implement add to cart functionality on product pages
   - Add cart item quantity update and removal features
