@@ -172,7 +172,12 @@
   - Add cart icon with item count in navbar
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 12. Implement order management for shop owners
+- [x] 12. Implement order management for shop owners
+
+
+
+
+
   - Create OrdersPage component for shop owners to view orders
   - Build order status update functionality
   - Implement order details view with customer information

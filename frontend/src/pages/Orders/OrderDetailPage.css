@@ -1,0 +1,153 @@
+.order-detail-page {
+  padding: 20px;
+}
+
+.order-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.order-detail-header h1 {
+  margin: 0;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.order-detail-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.order-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.meta-item {
+  margin-bottom: 10px;
+}
+
+.meta-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.meta-value {
+  font-size: 1rem;
+}
+
+.order-status-section {
+  margin-bottom: 20px;
+}
+
+.status-select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin-right: 10px;
+  min-width: 150px;
+}
+
+.update-status-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-status-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.update-status-button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+.order-items-section h2 {
+  margin-bottom: 15px;
+}
+
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-items-table th,
+.order-items-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-items-table th {
+  background-color: var(--background-color-light);
+  font-weight: 600;
+}
+
+.order-total {
+  margin-top: 20px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.customer-info-section {
+  margin-top: 30px;
+}
+
+.notification {
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.notification.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.notification.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 768px) {
+  .order-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .order-items-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
