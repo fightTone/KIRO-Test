@@ -1,0 +1,36 @@
+/* Global product styles */
+
+:root {
+  --product-card-bg: var(--card-bg);
+  --product-card-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --product-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --product-price-color: var(--accent-color);
+}
+
+/* Dark mode specific overrides */
+.dark-theme {
+  --product-card-bg: var(--card-bg);
+  --product-card-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  --product-card-hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Product grid layout for reuse */
+.products-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .products-grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+}

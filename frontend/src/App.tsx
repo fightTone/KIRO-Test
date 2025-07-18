@@ -19,6 +19,7 @@ import {
 import './App.css';
 import './styles/theme.css';
 import './styles/shops.css';
+import './styles/products.css';
 
 function AppRoutes() {
   return (

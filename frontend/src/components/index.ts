@@ -3,6 +3,8 @@ export * from './Layout';
 export * from './ThemeToggle';
 export * from './PrivateRoute';
 export { default as ShopCard } from './ShopCard';
+export { default as ProductCard } from './ProductCard';
+export { default as CategoryFilter } from './CategoryFilter';
 
 // Add more component exports here as they are created
 // For example:
