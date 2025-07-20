@@ -22,6 +22,7 @@ import './App.css';
 import './styles/theme.css';
 import './styles/shops.css';
 import './styles/products.css';
+import './styles/profile.css';
 
 function AppRoutes() {
   return (

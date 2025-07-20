@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import routers
-from app.routers import auth_router, shops_router, products_router, categories_router, cart_router, orders_router
+from app.routers import auth_router, shops_router, products_router, categories_router, cart_router, orders_router, users_router
 from app.utils.db_init import create_database
 from app.database import engine, Base
 
@@ -52,6 +52,7 @@ app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(cart_router)
 app.include_router(orders_router)
+app.include_router(users_router)
 
 @app.get("/")
 async def root():

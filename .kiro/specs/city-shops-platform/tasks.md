@@ -201,7 +201,13 @@
   - Add inventory management functionality for product stock
   - _Requirements: 2.3, 3.3, 3.4_
 
-- [ ] 14. Add user profile and account management
+- [x] 14. Add user profile and account management
+
+
+
+
+
+
   - Create ProfilePage component for user account details
   - Implement profile editing functionality
   - Add password change functionality

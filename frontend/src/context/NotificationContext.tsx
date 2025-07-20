@@ -1,18 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { OrderNotification } from '../components/Notification';
+import OrderNotification from '../components/Notification/OrderNotification';
+import Notification from '../components/Notification/Notification';
 import { useAuth } from './AuthContext';
 import orderService from '../services/orderService';
 
 interface Notification {
   id: number;
-  orderId: number;
+  orderId?: number;
   message: string;
+  type?: 'success' | 'error' | 'info' | 'warning';
 }
 
 interface NotificationContextType {
   notifications: Notification[];
   addNotification: (orderId: number, message: string) => void;
   removeNotification: (id: number) => void;
+  showNotification: (message: string, type?: 'success' | 'error' | 'info' | 'warning') => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -76,18 +79,42 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    const newNotification = {
+      id: Date.now(),
+      message,
+      type
+    };
+    
+    setNotifications(prev => [...prev, newNotification]);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      removeNotification(newNotification.id);
+    }, 5000);
+  };
+
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification }}>
+    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification, showNotification }}>
       {children}
       
       {/* Render notifications */}
       {notifications.map(notification => (
-        <OrderNotification
-          key={notification.id}
-          orderId={notification.orderId}
-          message={notification.message}
-          onClose={() => removeNotification(notification.id)}
-        />
+        notification.orderId ? (
+          <OrderNotification
+            key={notification.id}
+            orderId={notification.orderId}
+            message={notification.message}
+            onClose={() => removeNotification(notification.id)}
+          />
+        ) : (
+          <Notification
+            key={notification.id}
+            message={notification.message}
+            type={notification.type}
+            onClose={() => removeNotification(notification.id)}
+          />
+        )
       ))}
     </NotificationContext.Provider>
   );

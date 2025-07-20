@@ -5,6 +5,8 @@ export interface User {
   role: 'customer' | 'shop_owner';
   first_name?: string;
   last_name?: string;
+  phone?: string;
+  address?: string;
 }
 
 export interface Category {

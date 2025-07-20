@@ -114,3 +114,12 @@ def customer_token(client, test_user):
         data={"username": "testuser", "password": "password123"}
     )
     return response.json()["access_token"]
+
+@pytest.fixture(scope="function")
+def test_user_token(client, test_user):
+    # Get token for test user (alias for customer_token for clarity in user tests)
+    response = client.post(
+        "/auth/login",
+        data={"username": "testuser", "password": "password123"}
+    )
+    return response.json()["access_token"]
