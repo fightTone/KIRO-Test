@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shop } from '../../types';
+import LazyImage from '../LazyImage/LazyImage';
 
 interface ShopCardProps {
   shop: Shop;
@@ -17,7 +18,12 @@ const ShopCard: React.FC<ShopCardProps> = ({
     <div className="shop-card">
       <div className="shop-image">
         {shop.image_url ? (
-          <img src={shop.image_url} alt={shop.name} />
+          <LazyImage 
+            src={shop.image_url} 
+            alt={shop.name} 
+            className="shop-image-content"
+            placeholderSrc="/assets/shop-placeholder.png"
+          />
         ) : (
           <div className="placeholder-image">🏪</div>
         )}

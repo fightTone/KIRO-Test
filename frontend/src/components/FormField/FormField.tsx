@@ -60,6 +60,7 @@ const FormField: React.FC<FormFieldProps> = ({
         return (
           <textarea
             id={id}
+            name={id}
             value={value}
             onChange={onChange}
             onBlur={handleBlur}
@@ -76,6 +77,7 @@ const FormField: React.FC<FormFieldProps> = ({
         return (
           <select
             id={id}
+            name={id}
             value={value}
             onChange={onChange}
             onBlur={handleBlur}
@@ -99,6 +101,7 @@ const FormField: React.FC<FormFieldProps> = ({
         return (
           <input
             id={id}
+            name={id}
             type={type}
             value={value}
             onChange={onChange}

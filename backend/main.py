@@ -10,6 +10,7 @@ load_dotenv()
 # Import routers
 from app.routers import auth_router, shops_router, products_router, categories_router, cart_router, orders_router, users_router
 from app.utils.db_init import create_database
+from app.utils.optimize_db import add_database_indexes
 from app.database import engine, Base
 
 @asynccontextmanager
@@ -24,6 +25,10 @@ async def lifespan(app: FastAPI):
     # Create tables if they don't exist
     print("Creating database tables...")
     Base.metadata.create_all(bind=engine)
+    
+    # Optimize database with indexes
+    print("Optimizing database with indexes...")
+    add_database_indexes()
     
     yield
     # Shutdown

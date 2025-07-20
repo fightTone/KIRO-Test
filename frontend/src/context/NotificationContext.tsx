@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import OrderNotification from '../components/Notification/OrderNotification';
-import Notification from '../components/Notification/Notification';
+import NotificationComponent from '../components/Notification/Notification';
 import { useAuth } from './AuthContext';
 import orderService from '../services/orderService';
-import { ApiError, extractApiError } from '../services/api';
+import { extractApiError } from '../services/api';
 
 interface Notification {
   id: number;
@@ -118,7 +118,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
             onClose={() => removeNotification(notification.id)}
           />
         ) : (
-          <Notification
+          <NotificationComponent
             key={notification.id}
             message={notification.message}
             type={notification.type}

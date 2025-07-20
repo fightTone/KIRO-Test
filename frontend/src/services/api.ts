@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
+import cacheService from './cacheService';
 
 // Define error types for better handling
 export interface ApiError {
@@ -6,6 +7,13 @@ export interface ApiError {
   code?: string;
   details?: any;
   status?: number;
+}
+
+// Interface for cached request options
+export interface CachedRequestConfig extends AxiosRequestConfig {
+  cache?: boolean;
+  cacheExpiry?: number;
+  cacheKey?: string;
 }
 
 // Create an axios instance with default config
@@ -114,4 +122,68 @@ export const extractApiError = (error: any): ApiError => {
   };
 };
 
-export default api;
+// Enhanced API methods with caching support
+const apiWithCache = {
+  async get<T = any>(url: string, config?: CachedRequestConfig): Promise<T> {
+    const useCache = config?.cache !== false;
+    const cacheKey = config?.cacheKey || url;
+    const cacheExpiry = config?.cacheExpiry;
+    
+    // Try to get from cache first if caching is enabled
+    if (useCache) {
+      const cachedData = cacheService.get<T>(cacheKey);
+      if (cachedData) {
+        return Promise.resolve(cachedData);
+      }
+    }
+    
+    // If not in cache or cache disabled, make the API call
+    const response = await api.get<T>(url, config);
+    
+    // Store in cache if caching is enabled
+    if (useCache && response.data) {
+      cacheService.set(cacheKey, response.data, cacheExpiry);
+    }
+    
+    return response.data;
+  },
+  
+  async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const response = await api.post<T>(url, data, config);
+    
+    // Invalidate cache for this endpoint
+    cacheService.clearByPrefix(url);
+    
+    return response.data;
+  },
+  
+  async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const response = await api.put<T>(url, data, config);
+    
+    // Invalidate cache for this endpoint
+    cacheService.clearByPrefix(url);
+    
+    return response.data;
+  },
+  
+  async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await api.delete<T>(url, config);
+    
+    // Invalidate cache for this endpoint
+    cacheService.clearByPrefix(url);
+    
+    return response.data;
+  },
+  
+  // Expose the original axios instance
+  axios: api,
+  
+  // Expose cache control methods
+  cache: {
+    clear: cacheService.clear.bind(cacheService),
+    remove: cacheService.remove.bind(cacheService),
+    clearByPrefix: cacheService.clearByPrefix.bind(cacheService)
+  }
+};
+
+export default apiWithCache;

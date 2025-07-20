@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { getFeaturedShops } from '../../services/shopService';
 import { Shop } from '../../types';
 import { ShopCard } from '../../components';
+import SEO from '../../components/SEO/SEO';
+import LoadingSkeleton from '../../components/LoadingSkeleton/LoadingSkeleton';
 
 const HomePage: React.FC = () => {
   const [featuredShops, setFeaturedShops] = useState<Shop[]>([]);
@@ -29,6 +31,11 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
+      <SEO 
+        title="Home"
+        description="Discover local shops and products in your city with City Shops Platform. Browse shops by category and order online."
+        keywords="local shops, city shops, online shopping, local businesses"
+      />
       <section className="hero">
         <h1>Welcome to City Shops Platform</h1>
         <p className="lead">Discover local shops and products in your city</p>
@@ -64,7 +71,9 @@ const HomePage: React.FC = () => {
       <section className="featured-shops">
         <h2 className="section-title">Featured Shops</h2>
         {isLoading ? (
-          <div className="loading">Loading featured shops...</div>
+          <div className="shop-grid">
+            <LoadingSkeleton type="card" count={4} height="300px" />
+          </div>
         ) : error ? (
           <div className="error">{error}</div>
         ) : (

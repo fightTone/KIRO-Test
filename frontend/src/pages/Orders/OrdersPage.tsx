@@ -82,7 +82,7 @@ const OrdersPage: React.FC = () => {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [statusFilter, shopFilter, user?.role, addNotification]);
+  }, [statusFilter, shopFilter, user?.role, addNotification, lastOrderIds]);
 
   // Fetch shops owned by the user if they are a shop owner
   useEffect(() => {

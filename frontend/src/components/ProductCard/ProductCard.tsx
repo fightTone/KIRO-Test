@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../types';
+import LazyImage from '../LazyImage/LazyImage';
 import './ProductCard.css';
 
 interface ProductCardProps {
@@ -14,15 +15,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="product-card">
       <Link to={`/products/${product.id}`} className="product-card-link">
         <div className="product-card-image-container">
-          <img 
+          <LazyImage 
             src={product.image_url || defaultImage} 
             alt={product.name} 
             className="product-card-image"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = defaultImage;
-            }}
+            placeholderSrc="/assets/product-placeholder.png"
           />
           {!product.is_available && (
             <div className="product-card-out-of-stock">Out of Stock</div>

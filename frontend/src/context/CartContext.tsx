@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { CartSummary } from '../types';
 import { getCart, addToCart, updateCartItem, removeCartItem, clearCart } from '../services/cartService';
@@ -34,7 +34,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     if (!isAuthenticated || user?.role !== 'customer') {
       setCart(null);
       return;
@@ -51,11 +51,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isAuthenticated, user?.role]);
 
   useEffect(() => {
     fetchCart();
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, fetchCart]);
 
   const addItem = async (productId: number, quantity: number) => {
     try {
