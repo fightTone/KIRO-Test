@@ -8,8 +8,10 @@ import {
   ShopsPage,
   ShopDetailPage,
   MyShopPage,
+  ShopManagementPage,
   ProductsPage,
   ProductDetailPage,
+  ProductManagementPage,
   CartPage,
   OrdersPage,
   OrderDetailPage,
@@ -52,6 +54,21 @@ function AppRoutes() {
         <Route path="/my-shop" element={
           <PrivateRoute requiredRole="shop_owner">
             <MyShopPage />
+          </PrivateRoute>
+        } />
+        <Route path="/shop-management" element={
+          <PrivateRoute requiredRole="shop_owner">
+            <ShopManagementPage />
+          </PrivateRoute>
+        } />
+        <Route path="/product-management" element={
+          <PrivateRoute requiredRole="shop_owner">
+            <ProductManagementPage />
+          </PrivateRoute>
+        } />
+        <Route path="/product-management/:productId" element={
+          <PrivateRoute requiredRole="shop_owner">
+            <ProductManagementPage />
           </PrivateRoute>
         } />
         

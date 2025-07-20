@@ -185,7 +185,15 @@
   - Create order notification system for new orders
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 13. Implement shop and product management for shop owners
+- [x] 13. Implement shop and product management for shop owners
+
+
+
+
+
+
+
+
   - Create ShopManagementPage component for shop owners to manage their shops
   - Build ProductManagementPage component for adding/editing products
   - Implement forms for creating and updating shops with validation

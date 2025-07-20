@@ -3,17 +3,27 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { ThemeToggle } from '../ThemeToggle';
 import CartIcon from '../CartIcon';
+import './Header.css';
 
 const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownActive, setDropdownActive] = useState(false);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+    setDropdownActive(false);
+  };
+
+  const toggleDropdown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDropdownActive(!dropdownActive);
   };
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+    setDropdownActive(false);
   };
 
   return (
@@ -50,8 +60,19 @@ const Header: React.FC = () => {
               <>
                 {user?.role === 'shop_owner' ? (
                   <>
-                    <li>
-                      <Link to="/my-shop" onClick={closeMobileMenu}>My Shop</Link>
+                    <li className={`dropdown ${dropdownActive ? 'active' : ''}`}>
+                      <span className="dropdown-toggle" onClick={toggleDropdown}>My Shop</span>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <Link to="/my-shop" onClick={closeMobileMenu}>Dashboard</Link>
+                        </li>
+                        <li>
+                          <Link to="/shop-management" onClick={closeMobileMenu}>Edit Shop</Link>
+                        </li>
+                        <li>
+                          <Link to="/product-management" onClick={closeMobileMenu}>Manage Products</Link>
+                        </li>
+                      </ul>
                     </li>
                     <li>
                       <Link to="/orders" onClick={closeMobileMenu}>Orders</Link>
