@@ -7,29 +7,18 @@ interface LoadingSpinnerProps {
   message?: string;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
-  size = 'medium', 
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  size = 'medium',
   fullPage = false,
   message = 'Loading...'
 }) => {
-  const spinnerContent = (
-    <>
-      <div className={`spinner ${size}`}></div>
-      {message && <p className="spinner-message">{message}</p>}
-    </>
-  );
-
-  if (fullPage) {
-    return (
-      <div className="spinner-fullpage">
-        {spinnerContent}
-      </div>
-    );
-  }
-
+  const containerClass = fullPage ? 'spinner-fullpage' : 'spinner-container';
+  
   return (
-    <div className="spinner-container">
-      {spinnerContent}
+    <div className={containerClass} role="status" aria-live="polite">
+      <div className={`spinner ${size}`} aria-hidden="true"></div>
+      {message && <p className="spinner-message">{message}</p>}
+      <span className="sr-only">Loading content, please wait.</span>
     </div>
   );
 };

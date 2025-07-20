@@ -27,6 +27,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:a11y": "react-scripts test --testMatch='**/?(*.)+(a11y|accessibility).test.{js,jsx,ts,tsx}'",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
