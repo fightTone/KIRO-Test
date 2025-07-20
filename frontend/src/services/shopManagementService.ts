@@ -25,8 +25,7 @@ export interface ShopUpdate {
 // Get shop owned by the current user
 export const getMyShop = async (): Promise<Shop | null> => {
   try {
-    const response = await api.get('/shops/my-shop');
-    return response.data;
+    return await api.get('/shops/my-shop');
   } catch (error) {
     // If the user doesn't have a shop yet, return null
     if ((error as any).response?.status === 404) {
@@ -38,14 +37,12 @@ export const getMyShop = async (): Promise<Shop | null> => {
 
 // Create a new shop
 export const createShop = async (shopData: ShopCreate): Promise<Shop> => {
-  const response = await api.post('/shops', shopData);
-  return response.data;
+  return await api.post('/shops', shopData);
 };
 
 // Update an existing shop
 export const updateShop = async (shopId: number, shopData: ShopUpdate): Promise<Shop> => {
-  const response = await api.put(`/shops/${shopId}`, shopData);
-  return response.data;
+  return await api.put(`/shops/${shopId}`, shopData);
 };
 
 // Upload shop image
@@ -59,5 +56,6 @@ export const uploadShopImage = async (shopId: number, file: File): Promise<strin
     },
   });
   
-  return response.data.image_url;
+  // For file uploads, we might still need to access the image_url property
+  return response.image_url;
 };

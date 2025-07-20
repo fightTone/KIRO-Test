@@ -64,7 +64,7 @@ const ShopManagementPage: React.FC = () => {
       }
     };
 
-    if (user?.role === 'shop_owner') {
+    if (user && user.role.toLowerCase() === 'shop_owner') {
       loadData();
     } else {
       navigate('/');

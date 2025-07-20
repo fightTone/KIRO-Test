@@ -128,7 +128,7 @@ const OrderDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {user?.role === 'shop_owner' && (
+            {user && user.role.toLowerCase() === 'shop_owner' && (
               <div className="order-status-section">
                 <h3>Update Order Status</h3>
                 <div>
@@ -156,7 +156,7 @@ const OrderDetailPage: React.FC = () => {
               </div>
             )}
 
-            {user?.role === 'shop_owner' && (
+            {user && user.role.toLowerCase() === 'shop_owner' && (
               <div className="customer-info-section">
                 <h3>Customer Information</h3>
                 <div className="order-meta">

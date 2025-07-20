@@ -23,10 +23,9 @@ export interface ProductUpdate {
 
 // Get products for a specific shop
 export const getShopProducts = async (shopId: number): Promise<Product[]> => {
-  const response = await api.get(`/products`, {
+  return await api.get(`/products`, {
     params: { shop_id: shopId }
   });
-  return response.data;
 };
 
 // Create a new product
@@ -35,14 +34,12 @@ export const createProduct = async (shopId: number, productData: ProductCreate):
     ...productData,
     shop_id: shopId
   };
-  const response = await api.post('/products', data);
-  return response.data;
+  return await api.post('/products', data);
 };
 
 // Update an existing product
 export const updateProduct = async (productId: number, productData: ProductUpdate): Promise<Product> => {
-  const response = await api.put(`/products/${productId}`, productData);
-  return response.data;
+  return await api.put(`/products/${productId}`, productData);
 };
 
 // Delete a product
@@ -61,5 +58,6 @@ export const uploadProductImage = async (productId: number, file: File): Promise
     },
   });
   
-  return response.data.image_url;
+  // For file uploads, we might still need to access the image_url property
+  return response.image_url;
 };

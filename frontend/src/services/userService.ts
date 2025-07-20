@@ -19,24 +19,21 @@ const userService = {
    * Update the current user's profile information
    */
   updateProfile: async (userData: UserUpdateData): Promise<User> => {
-    const response = await api.put('/users/me', userData);
-    return response.data;
+    return await api.put('/users/me', userData);
   },
 
   /**
    * Change the current user's password
    */
   changePassword: async (passwordData: PasswordUpdateData): Promise<{ message: string }> => {
-    const response = await api.put('/users/me/password', passwordData);
-    return response.data;
+    return await api.put('/users/me/password', passwordData);
   },
 
   /**
    * Delete the current user's account
    */
   deleteAccount: async (): Promise<{ message: string }> => {
-    const response = await api.delete('/users/me');
-    return response.data;
+    return await api.delete('/users/me');
   },
 
   /**
@@ -45,17 +42,17 @@ const userService = {
   getShopOwnerStats: async (): Promise<any> => {
     // This would need to be implemented in the backend
     // For now, we'll just return mock data
-    const ordersResponse = await api.get('/orders?shop_owner=true');
-    const productsResponse = await api.get('/products?owner=true');
+    const orders = await api.get('/orders?shop_owner=true');
+    const products = await api.get('/products?owner=true');
     
-    const pendingOrders = ordersResponse.data.filter(
+    const pendingOrders = orders.filter(
       (order: any) => order.status === 'pending' || order.status === 'confirmed'
     ).length;
     
     return {
-      totalOrders: ordersResponse.data.length,
+      totalOrders: orders.length,
       pendingOrders,
-      totalProducts: productsResponse.data.length
+      totalProducts: products.length
     };
   }
 };

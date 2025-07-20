@@ -12,16 +12,13 @@ export const getProducts = async (shopId?: number, categoryId?: number) => {
     url += `?${params.toString()}`;
   }
   
-  const response = await api.get(url);
-  return response.data;
+  return await api.get(url);
 };
 
 export const getProduct = async (productId: number): Promise<Product> => {
-  const response = await api.get(`/products/${productId}`);
-  return response.data;
+  return await api.get(`/products/${productId}`);
 };
 
 export const getCategories = async (): Promise<Category[]> => {
-  const response = await api.get('/categories');
-  return response.data;
+  return await api.get('/categories');
 };

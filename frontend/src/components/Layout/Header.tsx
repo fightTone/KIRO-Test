@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { ThemeToggle } from '../ThemeToggle';
@@ -9,6 +9,31 @@ const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null);
+  
+  // Debug user role
+  console.log('Header - User:', user);
+  console.log('Header - isAuthenticated:', isAuthenticated);
+  console.log('Header - User role:', user?.role);
+
+  // Add click outside handler to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownActive(false);
+      }
+    };
+
+    // Add event listener when dropdown is active
+    if (dropdownActive) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Clean up event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownActive]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -58,9 +83,9 @@ const Header: React.FC = () => {
             </li>
             {isAuthenticated ? (
               <>
-                {user?.role === 'shop_owner' ? (
+                {user && user.role.toLowerCase() === 'shop_owner' ? (
                   <>
-                    <li className={`dropdown ${dropdownActive ? 'active' : ''}`}>
+                    <li ref={dropdownRef} className={`dropdown ${dropdownActive ? 'active' : ''}`}>
                       <span className="dropdown-toggle" onClick={toggleDropdown}>My Shop</span>
                       <ul className="dropdown-menu">
                         <li>

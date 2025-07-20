@@ -152,7 +152,7 @@ const ProductDetailPage: React.FC = () => {
                     return;
                   }
                   
-                  if (user?.role !== 'customer') {
+                  if (user && user.role.toLowerCase() !== 'customer') {
                     alert('Only customers can add items to cart');
                     return;
                   }

@@ -14,20 +14,17 @@ export const orderService = {
       params.append('status', filters.status);
     }
     
-    const response = await api.get(`/orders/?${params.toString()}`);
-    return response.data;
+    return await api.get(`/orders/?${params.toString()}`);
   },
   
   // Get a specific order by ID
   getOrderById: async (orderId: number): Promise<Order> => {
-    const response = await api.get(`/orders/${orderId}`);
-    return response.data;
+    return await api.get(`/orders/${orderId}`);
   },
   
   // Update order status (shop owners only)
   updateOrderStatus: async (orderId: number, statusUpdate: OrderStatusUpdate): Promise<Order> => {
-    const response = await api.put(`/orders/${orderId}`, statusUpdate);
-    return response.data;
+    return await api.put(`/orders/${orderId}`, statusUpdate);
   }
 };
 

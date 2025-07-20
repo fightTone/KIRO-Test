@@ -137,8 +137,25 @@ const RegisterPage: React.FC = () => {
     try {
       // Remove confirmPassword before sending to API
       const { confirmPassword, ...userData } = formData;
-      await register(userData);
-      navigate('/');
+      
+      // First try to register
+      try {
+        await register(userData);
+        navigate('/');
+      } catch (registerError: any) {
+        // If the error message indicates registration was successful but login failed,
+        // show a more user-friendly message and redirect to login
+        if (registerError.message && registerError.message.includes('Registration successful')) {
+          showApiError({
+            message: 'Registration successful! Please log in with your new account.'
+          }, '');
+          navigate('/login');
+          return;
+        }
+        
+        // Otherwise, rethrow the error to be caught by the outer catch block
+        throw registerError;
+      }
     } catch (err: any) {
       // Use the new API error handling
       showApiError(err, 'Registration failed. Please try again.');

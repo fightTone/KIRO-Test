@@ -20,8 +20,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, requiredRole }) =
   }
   
   // Check if user has required role (if specified)
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/" />;
+  if (requiredRole && user) {
+    const userRole = user.role.toLowerCase();
+    const requiredRoleLower = requiredRole.toLowerCase();
+    
+    if (userRole !== requiredRoleLower) {
+      return <Navigate to="/" />;
+    }
   }
   
   return <>{children}</>;

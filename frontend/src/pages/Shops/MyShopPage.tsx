@@ -33,13 +33,13 @@ const MyShopPage: React.FC = () => {
       }
     };
 
-    if (user?.role === 'shop_owner') {
+    if (user && user.role.toLowerCase() === 'shop_owner') {
       loadShopData();
     }
   }, [user]);
 
   // Redirect if not a shop owner
-  if (user && user.role !== 'shop_owner') {
+  if (user && user.role.toLowerCase() !== 'shop_owner') {
     return <Navigate to="/" />;
   }
 

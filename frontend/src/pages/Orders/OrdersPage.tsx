@@ -36,7 +36,7 @@ const OrdersPage: React.FC = () => {
         const data = await orderService.getOrders(filters);
         
         // For shop owners, check for new orders and show notifications
-        if (user?.role === 'shop_owner') {
+        if (user && user.role.toLowerCase() === 'shop_owner') {
           const pendingOrders = data.filter(order => order.status === 'pending');
           setNewOrdersCount(pendingOrders.length);
           
@@ -75,7 +75,7 @@ const OrdersPage: React.FC = () => {
     
     // Set up polling for new orders if user is a shop owner
     let intervalId: NodeJS.Timeout;
-    if (user?.role === 'shop_owner') {
+    if (user && user.role.toLowerCase() === 'shop_owner') {
       intervalId = setInterval(fetchOrders, 30000); // Check every 30 seconds
     }
     
@@ -87,7 +87,7 @@ const OrdersPage: React.FC = () => {
   // Fetch shops owned by the user if they are a shop owner
   useEffect(() => {
     const fetchShops = async () => {
-      if (user?.role === 'shop_owner') {
+      if (user && user.role.toLowerCase() === 'shop_owner') {
         try {
           const response = await fetch('http://localhost:8000/shops/my-shops', {
             headers: {
@@ -123,9 +123,9 @@ const OrdersPage: React.FC = () => {
     <div className="orders-page">
       <div className="orders-header">
         <div>
-          <h1>{user?.role === 'shop_owner' ? 'Shop Orders' : 'My Orders'}</h1>
+          <h1>{user && user.role.toLowerCase() === 'shop_owner' ? 'Shop Orders' : 'My Orders'}</h1>
           <p>
-            {user?.role === 'shop_owner' 
+            {user && user.role.toLowerCase() === 'shop_owner' 
               ? `Manage orders for your shop${newOrdersCount > 0 ? ` (${newOrdersCount} new pending orders)` : ''}`
               : 'View your order history'}
           </p>
@@ -147,7 +147,7 @@ const OrdersPage: React.FC = () => {
           <option value="cancelled">Cancelled</option>
         </select>
 
-        {user?.role === 'shop_owner' && shops.length > 1 && (
+        {user && user.role.toLowerCase() === 'shop_owner' && shops.length > 1 && (
           <select
             className="filter-select"
             value={shopFilter}
@@ -180,7 +180,7 @@ const OrdersPage: React.FC = () => {
               
               <div className="order-details">
                 <div>
-                  {user?.role === 'shop_owner' && (
+                  {user && user.role.toLowerCase() === 'shop_owner' && (
                     <div className="order-customer">
                       <strong>Customer:</strong> {order.customer_name || `Customer #${order.customer_id}`}
                     </div>

@@ -24,8 +24,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const checkAuth = async () => {
       if (token) {
         try {
-          const response = await api.get('/auth/me');
-          setUser(response.data);
+          // api.get returns the data directly with our enhanced API service
+          const userData = await api.get('/auth/me');
+          setUser(userData);
         } catch (error) {
           console.error('Authentication error:', error);
           localStorage.removeItem('token');
@@ -46,21 +47,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       formData.append('username', username);
       formData.append('password', password);
 
-      const response = await api.post('/auth/login', formData.toString(), {
+      // Use the original axios instance to get the full response
+      const response = await api.axios.post('/auth/login', formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 
+      // Check if we have a valid response with access_token
+      if (!response.data || !response.data.access_token) {
+        throw new Error('Invalid response from server during login');
+      }
+
       const { access_token } = response.data;
       localStorage.setItem('token', access_token);
       setToken(access_token);
 
-      // Get user info
-      const userResponse = await api.get('/auth/me');
-      setUser(userResponse.data);
+      // Get user info - api.get returns the data directly, not the response object
+      const userData = await api.get('/auth/me');
+      console.log('User data from /auth/me:', userData);
+      console.log('User role from API:', userData.role);
+      setUser(userData);
     } catch (error) {
       console.error('Login error:', error);
+      // Clear any partial authentication state
+      localStorage.removeItem('token');
+      setToken(null);
+      setUser(null);
       throw error;
     } finally {
       setIsLoading(false);
@@ -76,9 +89,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (userData: any) => {
     setIsLoading(true);
     try {
+      // Register the user
       await api.post('/auth/signup', userData);
-      // After registration, log the user in
-      await login(userData.username, userData.password);
+      
+      // After successful registration, log the user in
+      try {
+        await login(userData.username, userData.password);
+      } catch (loginError) {
+        console.error('Auto-login after registration failed:', loginError);
+        // If auto-login fails, we still consider registration successful
+        // but we'll throw a more specific error
+        throw new Error('Registration successful, but automatic login failed. Please try logging in manually.');
+      }
     } catch (error) {
       console.error('Registration error:', error);
       throw error;

@@ -29,10 +29,15 @@
   z-index: 1000;
   list-style: none;
   padding: 0.5rem 0;
+  pointer-events: none; /* Disable pointer events when not active */
+  opacity: 0; /* Hide the dropdown when not active */
+  transition: opacity 0.2s ease-in-out;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown.active .dropdown-menu {
   display: block;
+  pointer-events: auto; /* Enable pointer events when active */
+  opacity: 1; /* Show the dropdown when active */
 }
 
 .dropdown-menu li {
