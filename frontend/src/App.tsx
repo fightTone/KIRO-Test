@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, ThemeProvider, CartProvider, NotificationProvider } from './context/';
-import { Layout, PrivateRoute } from './components';
+import { Layout, PrivateRoute, ErrorBoundary } from './components';
 import {
   HomePage,
   LoginPage,
@@ -95,15 +95,17 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <ThemeProvider>
-          <CartProvider>
-            <NotificationProvider>
-              <AppRoutes />
-            </NotificationProvider>
-          </CartProvider>
-        </ThemeProvider>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <ThemeProvider>
+            <CartProvider>
+              <NotificationProvider>
+                <AppRoutes />
+              </NotificationProvider>
+            </CartProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </Router>
   );
 }

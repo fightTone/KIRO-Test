@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getShops, getCategories } from '../../services/shopService';
 import { Shop, Category } from '../../types';
 import { ShopCard } from '../../components';

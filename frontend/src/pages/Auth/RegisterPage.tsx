@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../context/NotificationContext';
+import { FormField, LoadingSpinner } from '../../components';
+import { commonValidationRules, ValidationRule } from '../../utils/formValidation';
 import { UserRegistration } from '../../types';
 
 interface FormData extends UserRegistration {
@@ -47,6 +50,7 @@ const RegisterPage: React.FC = () => {
   });
   
   const { register, isAuthenticated } = useAuth();
+  const { showApiError } = useNotification();
   const navigate = useNavigate();
 
   // Redirect if already authenticated
@@ -56,7 +60,7 @@ const RegisterPage: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
@@ -136,11 +140,39 @@ const RegisterPage: React.FC = () => {
       await register(userData);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+      // Use the new API error handling
+      showApiError(err, 'Registration failed. Please try again.');
+      setError(''); // Clear the old error since we're using notifications now
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Define validation rules for each field
+  const emailRules = [
+    commonValidationRules.required('Email'),
+    commonValidationRules.email()
+  ];
+  
+  const usernameRules = [
+    commonValidationRules.required('Username'),
+    commonValidationRules.minLength('Username', 3)
+  ];
+  
+  const passwordRules = [
+    commonValidationRules.required('Password'),
+    commonValidationRules.password()
+  ];
+  
+  // Custom validation rule for password confirmation
+  const confirmPasswordRule: ValidationRule = {
+    validator: (value: string) => value === formData.password,
+    message: 'Passwords do not match'
+  };
+  
+  const phoneRules = [
+    commonValidationRules.phone()
+  ];
 
   return (
     <div className="auth-page">
@@ -149,122 +181,98 @@ const RegisterPage: React.FC = () => {
       {error && <div className="error-message">{error}</div>}
       
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={formErrors.email ? 'error' : ''}
-          />
-          {formErrors.email && <div className="field-error">{formErrors.email}</div>}
-        </div>
+        <FormField
+          id="email"
+          label="Email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          validationRules={emailRules}
+          required
+        />
         
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className={formErrors.username ? 'error' : ''}
-          />
-          {formErrors.username && <div className="field-error">{formErrors.username}</div>}
-        </div>
+        <FormField
+          id="username"
+          label="Username"
+          type="text"
+          value={formData.username}
+          onChange={handleChange}
+          validationRules={usernameRules}
+          required
+        />
         
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={formErrors.password ? 'error' : ''}
-          />
-          {formErrors.password && <div className="field-error">{formErrors.password}</div>}
-        </div>
+        <FormField
+          id="password"
+          label="Password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          validationRules={passwordRules}
+          required
+        />
         
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={formErrors.confirmPassword ? 'error' : ''}
-          />
-          {formErrors.confirmPassword && <div className="field-error">{formErrors.confirmPassword}</div>}
-        </div>
+        <FormField
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          validationRules={[confirmPasswordRule]}
+          required
+        />
         
-        <div className="form-group">
-          <label htmlFor="role">Role</label>
-          <select
-            id="role"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            required
-          >
-            <option value="customer">Customer</option>
-            <option value="shop_owner">Shop Owner</option>
-          </select>
-        </div>
+        <FormField
+          id="role"
+          label="Role"
+          type="select"
+          value={formData.role}
+          onChange={handleChange}
+          options={[
+            { value: 'customer', label: 'Customer' },
+            { value: 'shop_owner', label: 'Shop Owner' }
+          ]}
+          required
+        />
         
-        <div className="form-group">
-          <label htmlFor="first_name">First Name</label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            value={formData.first_name}
-            onChange={handleChange}
-          />
-        </div>
+        <FormField
+          id="first_name"
+          label="First Name"
+          type="text"
+          value={formData.first_name}
+          onChange={handleChange}
+        />
         
-        <div className="form-group">
-          <label htmlFor="last_name">Last Name</label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-          />
-        </div>
+        <FormField
+          id="last_name"
+          label="Last Name"
+          type="text"
+          value={formData.last_name}
+          onChange={handleChange}
+        />
         
-        <div className="form-group">
-          <label htmlFor="phone">Phone</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
+        <FormField
+          id="phone"
+          label="Phone"
+          type="tel"
+          value={formData.phone}
+          onChange={handleChange}
+          validationRules={phoneRules}
+        />
         
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-        </div>
+        <FormField
+          id="address"
+          label="Address"
+          type="text"
+          value={formData.address}
+          onChange={handleChange}
+        />
         
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Registering...' : 'Register'}
+        <button type="submit" disabled={isLoading} className="submit-button">
+          {isLoading ? <LoadingSpinner size="small" /> : 'Register'}
         </button>
       </form>
       
-      <p>
+      <p className="auth-link">
         Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>

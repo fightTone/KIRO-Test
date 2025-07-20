@@ -3,6 +3,7 @@ import OrderNotification from '../components/Notification/OrderNotification';
 import Notification from '../components/Notification/Notification';
 import { useAuth } from './AuthContext';
 import orderService from '../services/orderService';
+import { ApiError, extractApiError } from '../services/api';
 
 interface Notification {
   id: number;
@@ -16,6 +17,7 @@ interface NotificationContextType {
   addNotification: (orderId: number, message: string) => void;
   removeNotification: (id: number) => void;
   showNotification: (message: string, type?: 'success' | 'error' | 'info' | 'warning') => void;
+  showApiError: (error: any, defaultMessage?: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -94,8 +96,16 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     }, 5000);
   };
 
+  const showApiError = (error: any, defaultMessage: string = 'An error occurred') => {
+    const apiError = extractApiError(error);
+    showNotification(apiError.message || defaultMessage, 'error');
+    
+    // Log the full error to console for debugging
+    console.error('API Error:', error);
+  };
+
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification, showNotification }}>
+    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification, showNotification, showApiError }}>
       {children}
       
       {/* Render notifications */}
